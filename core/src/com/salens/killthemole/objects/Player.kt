@@ -1,7 +1,10 @@
 package com.salens.killthemole.objects
 
 import com.badlogic.gdx.Gdx
+import com.salens.killthemole.objects.armour.Armour
+import com.salens.killthemole.objects.armour.Barrel
 import com.salens.killthemole.objects.weapons.Hammer
+import com.salens.killthemole.objects.weapons.Shovel
 import com.salens.killthemole.objects.weapons.Weapon
 
 /**
@@ -11,8 +14,17 @@ import com.salens.killthemole.objects.weapons.Weapon
 
 public class Player() {
 
-    private var health = 100
-    private var weapon: Weapon = Hammer()
+    private var armour: Armour
+    private var weapon: Weapon
+    public var health: Int
+    public var attack: Int
+
+    init{
+        armour = Barrel(this)
+        weapon = Shovel(this)
+        health = 100 + armour.moreHealth
+        attack = weapon.attack() + armour.moreAttack
+    }
 
 
     public fun getHurted(amount: Int) {
@@ -20,10 +32,8 @@ public class Player() {
         Gdx.app.log("CorrentHealth", "$health")
     }
 
-    public fun getHealth(): Int = health
     public fun attack(): Int {
-        var a= weapon.attack()
-        Gdx.app.log("Attack", "$a")
-        return weapon.attack()
+        weapon.extraAttack()
+        return attack
     }
 }

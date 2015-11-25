@@ -50,6 +50,7 @@ public class Mole(val ourX: Float, val ourY: Float, val player: Player, val heal
         addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 correntHealth -= player.attack()
+
                 Gdx.app.log("CorrentHealthOfMole", "$correntHealth")
                 return true
             }

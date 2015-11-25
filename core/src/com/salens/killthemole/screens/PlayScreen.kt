@@ -67,7 +67,7 @@ public class PlayScreen(val numOfLevel: String, game: Game) : Screen {
         level.update(delta)
         if (level.isGameOver) {
             level.gameOver()
-            Gdx.app.log("Game", "OVER")
+            //Gdx.app.log("Game", "OVER")
             //dispose()
         } else {
             stage.act(delta)

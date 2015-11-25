@@ -60,7 +60,7 @@ public class Level(val level: String) {
 
 
     public fun update(delta: Float) {
-        if (player.getHealth() < 0) isGameOver = true
+        if (player.health < 0) isGameOver = true
         for (mole in molesArray) mole.update(delta)
     }
 
@@ -83,9 +83,7 @@ public class Level(val level: String) {
     }
 
     public fun getPlayer(): Player = this.player
-    //public fun getMolesArray() : Array<Mole>? = this.molesArray
 
-    public fun getHealth(): Int = player.getHealth()
 
     public fun restart(){
 
