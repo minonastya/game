@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <level>
-	<delay delay="250">c5</delay>
-	<health health="6">c5</health>
-	<attack attack="3">c5</attack>
+	<delay delay="2500">c5</delay>
+	<health health="100">c5</health>
+	<attack attack="25">c5</attack>
     <positions>
 		<position x="85" y="10" />
 		<position x="75" y="25" />
