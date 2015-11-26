@@ -13,7 +13,7 @@ public class Shovel(val player: Player): Weapon(){
     override var damage = AssetsLoader.getInstance().getPrefs().getInteger("ShovelDamage")
     override var level = AssetsLoader.getInstance().getPrefs().getInteger("ShovelLevel")
 
-    override fun attack() = damage
+    override fun attack() = damage * level
     override fun extraAttack(){
         if(player.health < 100) player.health += damage / 5
     }

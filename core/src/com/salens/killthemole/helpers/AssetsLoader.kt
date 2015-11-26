@@ -30,11 +30,13 @@ public class AssetsLoader {
 
     public fun load() {
         loadWeapons()
+        if (!prefs.contains("Coins")) {prefs.putInteger("Coins", 0); prefs.flush()}
         moleAlive = Texture(Gdx.files.internal("data/images/mole.png"))
         moleDead = Texture(Gdx.files.internal("data/images/hole.png"))
         background = Texture(Gdx.files.internal("data/images/grass.png"))
         test = Texture(Gdx.files.internal("data/badlogic.jpg"))
     }
+
 
 
     public fun getPrefs(): Preferences = prefs

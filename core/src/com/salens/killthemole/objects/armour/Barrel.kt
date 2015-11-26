@@ -7,8 +7,8 @@ import com.salens.killthemole.objects.Player
  */
 
 public class Barrel(val player: Player): Armour(){
-    override val moreAttack: Int = -20
-    override val moreHealth: Int = 50
+    override val moreAttack: Int = 20
+    override val moreHealth: Int = -50
 
 
 }

@@ -12,6 +12,6 @@ public class Hammer(player: Player) : Weapon(){
     override var damage = AssetsLoader.getInstance().getPrefs().getInteger("HammerDamage")
     override var level = AssetsLoader.getInstance().getPrefs().getInteger("HammerLevel")
 
-    override fun attack() = damage
+    override fun attack() = damage * level
     override fun extraAttack(){}
 }
