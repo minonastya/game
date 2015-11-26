@@ -12,18 +12,26 @@ import com.salens.killthemole.objects.weapons.Weapon
  */
 
 
-public class Player() {
+public class Player(weaponType: String) {
 
     private var armour: Armour
     private var weapon: Weapon
     public var health: Int
     public var attack: Int
+    public var moleKilled: Int
 
     init{
-        armour = Barrel(this)
         weapon = Shovel(this)
+        when(weaponType){
+            "Hammer" -> weapon = Hammer(this)
+            "Shovel" -> weapon = Shovel(this)
+        }
+        armour = Barrel(this)
+        //weapon = Shovel(this)
         health = 100 + armour.moreHealth
         attack = weapon.attack() + armour.moreAttack
+
+        moleKilled = 0
     }
 
 

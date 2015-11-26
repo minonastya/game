@@ -28,16 +28,15 @@ public class Mole(val ourX: Float, val ourY: Float, val player: Player, val heal
     private var imgDead_texture: Texture?
     private val assets = AssetsLoader.getInstance()
     private var Timer: Timer = Timer()
-    public var deadCounter : Int
 
-    private var correntHealth: Int
+    private var currentHealth: Int
 
     public var isDead: Boolean = true
 
 
     init {
-        deadCounter = 0
-        correntHealth = health
+        //deadCounter = 0
+        currentHealth = health
         imgDead_texture = assets.moleDead ?: throw NullPointerException("moleDead texture")
         imgDead = Sprite(imgDead_texture)
         imgDead.setSize(Gdx.graphics.height.toFloat() * 15 / 100, Gdx.graphics.height.toFloat() * 15 / 100)
@@ -49,18 +48,14 @@ public class Mole(val ourX: Float, val ourY: Float, val player: Player, val heal
         //this.sound = Gdx.audio.newSound(Gdx.files.internal("sounds/aaa.mp3"))
         addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                correntHealth -= player.attack()
+                currentHealth -= player.attack()
 
-                Gdx.app.log("CorrentHealthOfMole", "$correntHealth")
+                Gdx.app.log("CorrentHealthOfMole", "$currentHealth")
                 return true
             }
         })
         setTouchable(Touchable.disabled)
     }
-
-    //  public fun setLevel(level : Level){
-    //      this.level = level
-    //  }
 
     override fun setBounds(x: Float, y: Float, width: Float, height: Float) {
         super.setBounds(x, y, width, height)
@@ -81,9 +76,10 @@ public class Mole(val ourX: Float, val ourY: Float, val player: Player, val heal
     }
 
     public fun update(delta: Float) {
-        if (correntHealth < 1) {
+        if (currentHealth < 1) {
+            currentHealth = health
             isDead = true
-            deadCounter++
+            player.moleKilled++
             setTouchable(Touchable.disabled)
             Timer.cancel()
             img = imgDead
@@ -91,7 +87,6 @@ public class Mole(val ourX: Float, val ourY: Float, val player: Player, val heal
     }
 
     public fun resurrect() {
-        correntHealth = health
         isDead = false
         setTouchable(Touchable.enabled)
         Timer = Timer()
