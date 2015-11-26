@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.salens.killthemole.helpers.XMLparse
 import java.util.*
 
-public class Level(val level: String) {
+public class Level(val level: String, weapon: String) {
 
     public var isGameOver = false
     public var molesArray: Array<Mole>
@@ -23,12 +23,16 @@ public class Level(val level: String) {
     //private var myTimerTask : TimerTask = setMoleAlive(Random())
     private val player: Player
     private var score: Int
+    private val coins: Coins
 
 
     init {
         score = 0
 
-        player = Player()
+        player = Player(weapon)
+
+        coins = Coins()
+
 
         val xml = XMLparse()
         val posArray = xml.getPos(level)
@@ -60,7 +64,7 @@ public class Level(val level: String) {
 
 
     public fun update(delta: Float) {
-        if (player.getHealth() < 0) isGameOver = true
+        if (player.health < 1) isGameOver = true
         for (mole in molesArray) mole.update(delta)
     }
 
@@ -71,6 +75,8 @@ public class Level(val level: String) {
          //   score += mole.deadCounter
             timer.cancel()
         }
+        Gdx.app.log("Score", player.moleKilled.toString())
+        coins.addCoins(player.moleKilled * level.toInt())
         timer.cancel()
     }
 
@@ -83,12 +89,6 @@ public class Level(val level: String) {
     }
 
     public fun getPlayer(): Player = this.player
-    //public fun getMolesArray() : Array<Mole>? = this.molesArray
 
-    public fun getHealth(): Int = player.getHealth()
-
-    public fun restart(){
-
-    }
 }
 

@@ -48,7 +48,7 @@ class MainMenuScreen(game: KillTheMole): Screen {
                 return true;
             }
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                game.setScreen(PlayScreen("1", game))
+                game.setScreen(ShopScreen(game))
                 dispose()
             }
         })

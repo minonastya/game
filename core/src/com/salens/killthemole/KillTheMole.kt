@@ -18,6 +18,7 @@ import com.salens.killthemole.screens.MainMenuScreen
 import com.salens.killthemole.screens.PlayScreen
 
 class KillTheMole : Game() {
+
     var font : BitmapFont? = null
     var levels: BitmapFont? = null
 

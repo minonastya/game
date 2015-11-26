@@ -13,28 +13,29 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.salens.killthemole.KillTheMole
 import com.salens.killthemole.helpers.AssetsLoader
 import com.salens.killthemole.objects.Background
 import com.salens.killthemole.objects.Level
 import com.salens.killthemole.objects.Mole
-//import com.badlogic.gdx.scenes.scene2d
+import com.salens.killthemole.objects.weapons.Weapon
 
 /**
  * Created by Antropov Igor on 14.11.2015.
  */
 
-public class PlayScreen(val numOfLevel: String, game: Game) : Screen {
+public class PlayScreen(val numOfLevel: String, val game: KillTheMole, weapon: String) : Screen {
 
     private val level: Level
     private val batch: Batch
     private val stage: Stage
     private val backgroung: Background
 
-    private val game : Game
+   // private val game : KillTheMole
 
     init {
-        this.game = game
-        level = Level(numOfLevel)
+       // this.game = game
+        level = Level(numOfLevel, weapon)
         batch = SpriteBatch()
         stage = Stage()
         backgroung = Background()
@@ -67,8 +68,8 @@ public class PlayScreen(val numOfLevel: String, game: Game) : Screen {
         level.update(delta)
         if (level.isGameOver) {
             level.gameOver()
-            Gdx.app.log("Game", "OVER")
-            //dispose()
+            game.setScreen(MainMenuScreen(game))
+            dispose()
         } else {
             stage.act(delta)
             stage.draw()
@@ -82,7 +83,7 @@ public class PlayScreen(val numOfLevel: String, game: Game) : Screen {
 
     override fun dispose() {
         stage.dispose()
-        game.dispose()
+        //game.dispose()
     }
 
 }
