@@ -19,7 +19,7 @@ class Background:Actor() {
     private val assets = AssetsLoader.getInstance()
 
     init{
-        backgroundTexture = assets.background ?:throw NullPointerException()
+        backgroundTexture = assets.grasstop ?:throw NullPointerException()
         backgroundSprite = Sprite(backgroundTexture)
         backgroundSprite.setSize(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
     }

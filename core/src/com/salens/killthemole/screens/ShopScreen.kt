@@ -28,9 +28,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
     private val table: Table
     private val pixmap: Pixmap
     private val moneyTable: Table
-
     private val play: TextButton
-
     private val table2: Table
     private val moneyLabel: Label
 
@@ -152,8 +150,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
             }
 
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                game.setScreen(PlayScreen("1", game, weaponType))
-                dispose()
+                game.screen = LevelScreen(game, weaponType)
             }
         })
 

@@ -28,15 +28,14 @@ public class XMLparse {
         val dirHandle: FileHandle
 
         if (Gdx.app.type == ApplicationType.Android) {
-            dirHandle = Gdx.files.internal("data/xml/levels")
+            dirHandle = Gdx.files.internal("data/xml")
         } else {
-            dirHandle = Gdx.files.internal(System.getProperty("user.dir") + "/data/assets/xml/levels")
+            dirHandle = Gdx.files.internal(System.getProperty("user.dir") + "/data/xml")
         }
 
-        for (entry in dirHandle.list()) {
-            levels.add(entry.name().split(".xml")[0])
+        for (entry in 0..dirHandle.list().size - 1) {
+            levels.add(dirHandle.list()[entry].name().split(".xml")[entry])
         }
-
 
         for (i in 0..levels.size - 1) {
             int_levels.add(Integer.parseInt(levels.get(i)))
@@ -47,7 +46,6 @@ public class XMLparse {
         for (i in 0..int_levels.size - 1) {
             levels.add(int_levels.get(i).toString())
         }
-
         return levels
     }
 
