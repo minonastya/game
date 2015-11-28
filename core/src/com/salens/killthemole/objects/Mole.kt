@@ -95,7 +95,6 @@ public class Mole(val ourX: Float, val ourY: Float, val player: Player, val heal
                 escaping()
             }
         }, 2500)
-
     }
 
     public fun getImg(): Sprite {

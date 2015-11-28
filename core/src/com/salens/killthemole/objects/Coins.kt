@@ -7,11 +7,10 @@ import com.badlogic.gdx.Gdx
  */
 public class Coins(){
 
-    private var amount: Int
+    public var amount: Int
 
     init {
         amount = Gdx.app.getPreferences("KillTheMole").getInteger("Coins")
-        Gdx.app.log("AAAAA", "$amount")
     }
 
     public fun spendCoins(amount: Int): Boolean{
@@ -27,6 +26,5 @@ public class Coins(){
         this.amount += amount
         Gdx.app.getPreferences("KillTheMole").putInteger("Coins", this.amount)
         Gdx.app.getPreferences("KillTheMole").flush()
-        Gdx.app.log("Coins", "$amount")
     }
 }

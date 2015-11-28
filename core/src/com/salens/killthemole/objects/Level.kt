@@ -21,14 +21,11 @@ public class Level(val level: String, weapon: String) {
     //private var time : Float = 0f
     private var timer: Timer
     //private var myTimerTask : TimerTask = setMoleAlive(Random())
-    private val player: Player
-    private var score: Int
+    public val player: Player
     private val coins: Coins
 
 
     init {
-        score = 0
-
         player = Player(weapon)
 
         coins = Coins()
@@ -63,9 +60,10 @@ public class Level(val level: String, weapon: String) {
     }
 
 
-    public fun update(delta: Float) {
+    public fun update(delta: Float): Int {
         if (player.health < 1) isGameOver = true
         for (mole in molesArray) mole.update(delta)
+        return player.moleKilled
     }
 
 
@@ -87,8 +85,5 @@ public class Level(val level: String, weapon: String) {
             molesArray[num].resurrect()
         }
     }
-
-    public fun getPlayer(): Player = this.player
-
 }
 

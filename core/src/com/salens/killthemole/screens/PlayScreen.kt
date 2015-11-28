@@ -4,14 +4,14 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.salens.killthemole.KillTheMole
 import com.salens.killthemole.helpers.AssetsLoader
@@ -24,18 +24,34 @@ import com.salens.killthemole.objects.weapons.Weapon
  * Created by Antropov Igor on 14.11.2015.
  */
 
-public class PlayScreen(val numOfLevel: String, val game: KillTheMole, weapon: String) : Screen {
+public class PlayScreen(val numOfLevel: String, val game: KillTheMole, val weapon: String) : Screen {
 
     private val level: Level
     private val batch: Batch
     private val stage: Stage
     private val backgroung: Background
+    private var flag: Boolean
+    private var labelStyle: Label.LabelStyle
+    private var scoreLabel: Label
 
-   // private val game : KillTheMole
+    private val scoreTable: Table
+
+    private var currentAmountDeath: Int
 
     init {
-       // this.game = game
+        currentAmountDeath = 0
+        labelStyle = Label.LabelStyle()
+        labelStyle.font = game.font
+
+        scoreLabel = Label("Score: $currentAmountDeath", labelStyle)
+        scoreTable = Table()
+        scoreTable.setFillParent(true)
+        scoreTable.add(scoreLabel)
+        scoreTable.bottom().left()
+
         level = Level(numOfLevel, weapon)
+        flag = true
+
         batch = SpriteBatch()
         stage = Stage()
         backgroung = Background()
@@ -45,7 +61,7 @@ public class PlayScreen(val numOfLevel: String, val game: KillTheMole, weapon: S
             stage.addActor(mole)
 
 
-
+        stage.addActor(scoreTable)
         Gdx.input.inputProcessor = stage
     }
 
@@ -64,12 +80,75 @@ public class PlayScreen(val numOfLevel: String, val game: KillTheMole, weapon: S
 
     }
 
+    private fun endGameActor(): Table {
+        val skin = Skin()
+        skin.add("default", game.levels)
+        val pixmap = Pixmap((Gdx.graphics.getWidth() / 4), Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888)
+        pixmap.setColor(Color.WHITE)
+        pixmap.fill()
+        skin.add("background", Texture(pixmap))
+
+        val textButtonStyle = TextButton.TextButtonStyle()
+        textButtonStyle.up = skin.newDrawable("background", Color.GRAY)
+        textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY)
+        textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY)
+        textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY)
+        textButtonStyle.font = skin.getFont("default")
+        skin.add("default", textButtonStyle)
+
+
+        val table = Table()
+        table.setFillParent(true)
+
+        val retry = TextButton("retry", skin)
+        retry.addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                return true;
+            }
+
+            override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                game.setScreen(PlayScreen(numOfLevel, game, weapon))
+                dispose()
+            }
+        })
+        val mainMenu = TextButton("Main menu", skin)
+        mainMenu.addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                return true;
+            }
+
+            override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                game.setScreen(MainMenuScreen(game))
+                dispose()
+            }
+        })
+        val score = Label("Your score: ${level.player.moleKilled} ", labelStyle)
+        val money = Label("Your money: ${level.player.moleKilled * numOfLevel.toInt()}", labelStyle)
+
+        table.add(score)
+        table.row()
+        table.add(money)
+        table.row()
+        table.add(retry)//.width(100f)
+        table.add(mainMenu)//.width(100f)
+        table.center()
+        table.setFillParent(true)
+        return table
+    }
+
     override fun render(delta: Float) {
-        level.update(delta)
-        if (level.isGameOver) {
-            level.gameOver()
-            game.setScreen(MainMenuScreen(game))
-            dispose()
+
+        if (flag) {
+            if (level.isGameOver) {
+                level.gameOver()
+                stage.addActor(endGameActor())
+                flag = false
+            } else {
+                currentAmountDeath = level.update(delta)
+                scoreLabel.setText("Score: $currentAmountDeath")
+                stage.act(delta)
+                stage.draw()
+            }
         } else {
             stage.act(delta)
             stage.draw()
