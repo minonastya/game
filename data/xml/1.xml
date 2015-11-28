@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <level>
-	<delay delay="2500">c5</delay>
+	<delay delay="3000">c5</delay>
 	<health health="100">c5</health>
 	<attack attack="25">c5</attack>
     <positions>
