@@ -2,6 +2,7 @@ package com.salens.killthemole.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.Color
 import com.salens.killthemole.KillTheMole
 import com.badlogic.gdx.graphics.GL20
@@ -12,21 +13,27 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.salens.killthemole.helpers.AssetsLoader
 
-
-class MainMenuScreen(game: KillTheMole): Screen {
+class MainMenuScreen(val game: KillTheMole): Screen {
     private val stage: Stage
     private val skin: Skin
     private val play: TextButton
     private val exit: TextButton
     private val table: Table
     private val pixmap: Pixmap
+    private val assets = AssetsLoader.getInstance()
+    private val music: Music?
 
     init {
+        music = assets.music
+        music?.play()
+        music?.setVolume(1f)
+        music?.setLooping(true)
         stage = Stage(ScreenViewport())
         skin = Skin()
         skin.add("default", game.levels)
-        pixmap = Pixmap((Gdx.graphics.getWidth()/4),Gdx.graphics.getHeight()/10, Pixmap.Format.RGB888)
+        pixmap = Pixmap((Gdx.graphics.getWidth() / 4), Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888)
         pixmap.setColor(Color.WHITE)
         pixmap.fill()
         skin.add("background", Texture(pixmap))
@@ -49,9 +56,9 @@ class MainMenuScreen(game: KillTheMole): Screen {
             }
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                 game.setScreen(ShopScreen(game))
-                dispose()
             }
         })
+
 
         exit = TextButton("Exit", skin)
         exit.addListener(object: ClickListener() {
