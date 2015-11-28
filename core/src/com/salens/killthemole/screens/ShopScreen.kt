@@ -27,10 +27,12 @@ public class ShopScreen(game: KillTheMole) : Screen {
     private val hammerLevelUp: TextButton
     private val table: Table
     private val pixmap: Pixmap
+    private val moneyTable: Table
 
     private val play: TextButton
 
     private val table2: Table
+    private val moneyLabel: Label
 
     private var weaponType: String = ""
     private val pref: Preferences = Gdx.app.getPreferences("KillTheMole")
@@ -64,7 +66,8 @@ public class ShopScreen(game: KillTheMole) : Screen {
         table = Table()
         table.setFillParent(true)
 
-        hammer = TextButton("Hammer", skin)
+        var curLev = pref.getInteger("HammerLevel")
+        hammer = TextButton("Hammer, lvl: ${pref.getInteger("HammerLevel")}", skin)
         hammer.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 return true;
@@ -75,8 +78,29 @@ public class ShopScreen(game: KillTheMole) : Screen {
 
             }
         })
+        var currentCost = Math.pow(curLev.toDouble(), 2.0)
 
-        shovel = TextButton("Shovel", skin)
+        hammerLevelUp = TextButton("LevelUp: $currentCost", skin, "withChecked")
+        hammerLevelUp.addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                return true;
+            }
+
+            override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                curLev = pref.getInteger("HammerLevel")
+                currentCost = Math.pow(curLev.toDouble(), 2.0)
+                if (coins.spendCoins(currentCost.toInt())) {
+                    pref.putInteger("HammerLevel", curLev + 1)
+                    curLev++
+                    currentCost = Math.pow(curLev.toDouble(), 2.0)
+                    hammerLevelUp.setText("LevelUp: $currentCost")
+                    hammer.setText("Hammer, lvl: $curLev")
+                    pref.flush()
+                }
+            }
+        })
+        curLev = pref.getInteger("ShovelLevel")
+        shovel = TextButton("Shovel, lvl: $curLev", skin)
         shovel.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 return true;
@@ -87,33 +111,22 @@ public class ShopScreen(game: KillTheMole) : Screen {
 
             }
         })
-        hammerLevelUp = TextButton("LevelUp", skin, "withChecked")
-        hammerLevelUp.addListener(object : ClickListener() {
-            override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                return true;
-            }
-
-            override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                val curLev = pref.getInteger("HammerLevel")
-                if (coins.spendCoins((Math.pow(curLev.toDouble(), 2.0)).toInt())) {
-                    pref.putInteger("HammerLevel", curLev + 1)
-                    Gdx.app.log("Level", "Upped")
-                    pref.flush()
-                }
-            }
-        })
-
-        shovelLevelUp = TextButton("LevelUp", skin, "withChecked")
+        currentCost = Math.pow(curLev.toDouble(), 3.0)
+        shovelLevelUp = TextButton("LevelUp: $currentCost", skin, "withChecked")
         shovelLevelUp.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 return true;
             }
 
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                val curLev = pref.getInteger("ShovelLevel")
-                if (coins.spendCoins((Math.pow(curLev.toDouble(), 3.0)).toInt())) {
+                curLev = pref.getInteger("ShovelLevel")
+                currentCost = Math.pow(curLev.toDouble(), 3.0)
+                if (coins.spendCoins(currentCost.toInt())) {
                     pref.putInteger("ShovelLevel", curLev + 1)
-                    Gdx.app.log("Level123", "Upped")
+                    curLev++
+                    currentCost = Math.pow(curLev.toDouble(), 3.0)
+                    shovelLevelUp.setText("LevelUp: $currentCost")
+                    shovel.setText("Shovel, lvl: $curLev")
                     pref.flush()
                 }
             }
@@ -149,6 +162,16 @@ public class ShopScreen(game: KillTheMole) : Screen {
         table2.bottom().right()
         stage.addActor(table2)
 
+        val labelStyle = Label.LabelStyle()
+        labelStyle.font = game.font
+        labelStyle.fontColor = Color.BLACK
+        moneyLabel = Label("MONEY: ${coins.amount}", labelStyle)
+        moneyTable = Table()
+        moneyTable.add(moneyLabel)
+        moneyTable.right().top()
+        moneyTable.setFillParent(true)
+        stage.addActor(moneyLabel)
+
         Gdx.input.setInputProcessor(stage)
         Gdx.input.setCatchBackKey(true)
     }
@@ -157,7 +180,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
     public override fun render(delta: Float) {
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
+        moneyLabel.setText("MONEY: ${coins.amount}")
         stage.act(delta)
         stage.draw()
     }

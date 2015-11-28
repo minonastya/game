@@ -19,7 +19,7 @@ import com.salens.killthemole.screens.PlayScreen
 
 class KillTheMole : Game() {
 
-    var font : BitmapFont? = null
+    public var font : BitmapFont? = null
     var levels: BitmapFont? = null
 
     override fun create() {
