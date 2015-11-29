@@ -14,16 +14,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.salens.killthemole.helpers.AssetsLoader
+import com.salens.killthemole.objects.Background
 
 class MainMenuScreen(val game: KillTheMole): Screen {
     private val stage: Stage
     private val skin: Skin
+    private val label: Label
     private val play: TextButton
+    private val settings: TextButton
     private val exit: TextButton
     private val table: Table
     private val pixmap: Pixmap
     private val assets = AssetsLoader.getInstance()
     private val music: Music?
+    private val background: Background
 
     init {
         music = assets.music
@@ -31,12 +35,19 @@ class MainMenuScreen(val game: KillTheMole): Screen {
         music?.setVolume(1f)
         music?.setLooping(true)
         stage = Stage(ScreenViewport())
+        background = Background()
+        background.setPosition(0f, 0f)
+        stage.addActor(background)
         skin = Skin()
         skin.add("default", game.levels)
         pixmap = Pixmap((Gdx.graphics.getWidth() / 4), Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888)
         pixmap.setColor(Color.WHITE)
         pixmap.fill()
         skin.add("background", Texture(pixmap))
+        val labelStyle = Label.LabelStyle()
+        labelStyle.font = game.font
+        labelStyle.fontColor = Color.WHITE
+        label = Label("KILL THE MOLE", labelStyle)
 
         val textButtonStyle = TextButton.TextButtonStyle()
         textButtonStyle.up = skin.newDrawable("background", Color.GRAY)
@@ -59,6 +70,7 @@ class MainMenuScreen(val game: KillTheMole): Screen {
             }
         })
 
+        settings = TextButton("Settings", skin)
 
         exit = TextButton("Exit", skin)
         exit.addListener(object: ClickListener() {
@@ -71,10 +83,13 @@ class MainMenuScreen(val game: KillTheMole): Screen {
                 dispose()
             }
         })
-        table.row().height(100f)
+        table.add(label).width(400f).expandX
+        table.row().height(50f)
         table.add(play).width(400f)
-        table.row().height(100f)
-        table.add(exit).width((400f))
+        table.row().height(50f)
+        table.add(settings).width(400f)
+        table.row().height(50f)
+        table.add(exit).width(400f)
         stage.addActor(table)
 
         Gdx.input.setInputProcessor(stage)

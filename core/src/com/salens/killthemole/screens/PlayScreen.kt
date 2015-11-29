@@ -19,8 +19,7 @@ import com.salens.killthemole.KillTheMole
 import com.salens.killthemole.helpers.AssetsLoader
 import com.salens.killthemole.objects.Background
 import com.salens.killthemole.objects.Level
-import com.salens.killthemole.objects.Mole
-import com.salens.killthemole.objects.weapons.Weapon
+
 
 /**
  * Created by Antropov Igor on 14.11.2015.
@@ -31,7 +30,7 @@ public class PlayScreen(val numOfLevel: String, val game: KillTheMole, val weapo
     private val level: Level
     private val batch: Batch
     private val stage: Stage
-    private val backgroung: Background
+    private val background: Background
     private var flag: Boolean
     private var labelStyle: Label.LabelStyle
     private var scoreLabel: Label
@@ -61,9 +60,9 @@ public class PlayScreen(val numOfLevel: String, val game: KillTheMole, val weapo
 
         batch = SpriteBatch()
         stage = Stage()
-        backgroung = Background()
-        backgroung.setPosition(0f, 0f)
-        stage.addActor(backgroung)
+        background = Background()
+        background.setPosition(0f, 0f)
+        stage.addActor(background)
         for (mole in level.molesArray)
             stage.addActor(mole)
 

@@ -18,9 +18,13 @@ public class AssetsLoader {
     public var moleAlive: Texture? = null
     public var moleDead: Texture? = null
     public var background: Texture? = null
+    public var dirtgrass: Texture? = null
     public var test: Texture? = null
-    public var mainbackground: Texture? = null
-    public var grasstop: Texture? = null
+    public var mushroomred: Texture? = null
+    public var mushroomwhite: Texture? = null
+    public var mushroombrown: Texture? = null
+    public var pine: Texture? = null
+    public var oak: Texture? = null
     public var music: Music? = null
     public var sound1: Sound? = null
     public var sound2: Sound? = null
@@ -37,10 +41,14 @@ public class AssetsLoader {
         if (!prefs.contains("Coins")) {prefs.putInteger("Coins", 0); prefs.flush()}
         moleAlive = Texture(Gdx.files.internal("data/images/mole.png"))
         moleDead = Texture(Gdx.files.internal("data/images/hole.png"))
-        background = Texture(Gdx.files.internal("data/images/grass.png"))
+        background = Texture(Gdx.files.internal("data/images/collage.jpg"))
+        dirtgrass = Texture(Gdx.files.internal("data/images/dirt_grass.png"))
         test = Texture(Gdx.files.internal("data/badlogic.jpg"))
-        mainbackground = Texture(Gdx.files.internal("data/images/mole2.jpg"))
-        grasstop = Texture(Gdx.files.internal("data/images/grass_top.png"))
+        mushroomred = Texture(Gdx.files.internal("data/images/mushroom_red.png"))
+        mushroomwhite = Texture(Gdx.files.internal("data/images/mushroom_tan.png"))
+        mushroombrown = Texture(Gdx.files.internal("data/images/mushroom_brown.png"))
+        pine = Texture(Gdx.files.internal("data/images/tree_pine.png"))
+        oak = Texture(Gdx.files.internal("data/images/tree_oak.png"))
         music = Gdx.audio.newMusic(Gdx.files.internal("data/music/music1.ogg"))
         sound1 = Gdx.audio.newSound(Gdx.files.internal("data/music/sound1.wav"))
         sound2 = Gdx.audio.newSound(Gdx.files.internal("data/music/sound2.mp3"))

@@ -33,8 +33,8 @@ public class XMLparse {
             dirHandle = Gdx.files.internal(System.getProperty("user.dir") + "/data/xml")
         }
 
-        for (entry in 0..dirHandle.list().size - 1) {
-            levels.add(dirHandle.list()[entry].name().split(".xml")[entry])
+        for (entry in dirHandle.list()) {
+            levels.add(entry.name().split(".xml")[0])
         }
 
         for (i in 0..levels.size - 1) {

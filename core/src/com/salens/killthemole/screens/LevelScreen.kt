@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.salens.killthemole.KillTheMole
 import com.salens.killthemole.helpers.AssetsLoader
 import com.salens.killthemole.helpers.XMLparse
+import com.salens.killthemole.objects.Background
 
 class LevelScreen(internal val game: KillTheMole, weapon: String) : Screen {
 
@@ -29,6 +30,8 @@ class LevelScreen(internal val game: KillTheMole, weapon: String) : Screen {
     private val labelStyle: Label.LabelStyle
     private var level: TextButton? = null
     private val pixmap: Pixmap
+    private val background: Background
+
 
     init {
         stage = Stage(ScreenViewport())
@@ -38,6 +41,9 @@ class LevelScreen(internal val game: KillTheMole, weapon: String) : Screen {
         pixmap.setColor(Color.WHITE)
         pixmap.fill()
         skin.add("background", Texture(pixmap))
+        background = Background()
+        background.setPosition(0f, 0f)
+        stage.addActor(background)
 
         val textButtonStyle = TextButton.TextButtonStyle()
         textButtonStyle.up = skin.newDrawable("background", Color.GRAY)
@@ -52,7 +58,7 @@ class LevelScreen(internal val game: KillTheMole, weapon: String) : Screen {
         labelStyle = Label.LabelStyle()
         labelStyle.font = game.levels
         table = Table()
-        table.row().pad(20f)
+        table.row().pad(20f).width(200f).height(50f)
         table.center()
         table.setFillParent(true)
 
@@ -71,7 +77,7 @@ class LevelScreen(internal val game: KillTheMole, weapon: String) : Screen {
             })
             table.add(level)
             val indexLevel = java.lang.Float.parseFloat(i.toString()) + 1
-            if (indexLevel % 5.0f == 0f) table.row().padLeft(20f).padRight(20f).padBottom(20f)
+            if (indexLevel % 5.0f != 0f) table.row().pad(20f).width(200f).height(50f) else table.columns
         }
         stage.addActor(table)
 
