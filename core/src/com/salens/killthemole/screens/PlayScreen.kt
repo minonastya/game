@@ -39,21 +39,51 @@ public class PlayScreen(val numOfLevel: String, val game: KillTheMole, val weapo
     private val assets = AssetsLoader.getInstance()
     private val sound2: Sound?
     private val music: Music?
+    private val skin: Skin
+    private val pauseButton: TextButton
+    private val pauseTable: Table = pauseGameActor()
+    private val oneMoreTable: Table
 
     init {
         music = assets.music
         music?.play()
         music?.setVolume(0.5f)
         sound2 = assets.sound2
+
         currentAmountDeath = 0
+
         labelStyle = Label.LabelStyle()
         labelStyle.font = game.font
-
         scoreLabel = Label("Score: $currentAmountDeath", labelStyle)
         scoreTable = Table()
         scoreTable.setFillParent(true)
         scoreTable.add(scoreLabel)
         scoreTable.bottom().left()
+
+        skin = Skin()
+        skin.add("default", game.levels)
+        skin.add("ButtonOn", assets.buttonon)
+        skin.add("ButtonOff", assets.buttonoff)
+
+        val textButtonStyle = TextButton.TextButtonStyle()
+        textButtonStyle.up = skin.newDrawable("ButtonOn")
+        textButtonStyle.down = skin.newDrawable("ButtonOff")
+        textButtonStyle.checked = skin.newDrawable("ButtonOn")
+        textButtonStyle.over = skin.newDrawable("ButtonOff")
+        textButtonStyle.font = skin.getFont("default")
+        skin.add("default", textButtonStyle)
+
+        pauseButton = TextButton("||", skin)
+        pauseButton.addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                return true;
+            }
+
+            override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                pause()
+            }
+        })
+
 
         level = Level(numOfLevel, weapon)
         flag = true
@@ -65,9 +95,15 @@ public class PlayScreen(val numOfLevel: String, val game: KillTheMole, val weapo
         stage.addActor(background)
         for (mole in level.molesArray)
             stage.addActor(mole)
-
+        oneMoreTable = Table()
+        oneMoreTable.setFillParent(true)
+        oneMoreTable.add(pauseButton)
+        oneMoreTable.right().bottom()
+        stage.addActor(oneMoreTable)
 
         stage.addActor(scoreTable)
+        pauseTable.isVisible = false
+        stage.addActor(pauseTable)
         Gdx.input.inputProcessor = stage
     }
 
@@ -76,6 +112,59 @@ public class PlayScreen(val numOfLevel: String, val game: KillTheMole, val weapo
     }
 
     override fun pause() {
+        level.pause()
+        pauseTable.isVisible = true
+    }
+
+    private fun pauseGameActor(): Table {
+        music?.pause()
+        sound2?.play()
+        val skin = Skin()
+        skin.add("default", game.levels)
+        skin.add("ButtonOn", assets.buttonon)
+        skin.add("ButtonOff", assets.buttonoff)
+
+        val textButtonStyle = TextButton.TextButtonStyle()
+        textButtonStyle.up = skin.newDrawable("ButtonOn")
+        textButtonStyle.down = skin.newDrawable("ButtonOff")
+        textButtonStyle.checked = skin.newDrawable("ButtonOn")
+        textButtonStyle.over = skin.newDrawable("ButtonOff")
+        textButtonStyle.font = skin.getFont("default")
+        skin.add("default", textButtonStyle)
+
+        val table = Table()
+        table.setFillParent(true)
+
+        val retry = TextButton("  Continue  ", skin)
+        retry.addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                return true;
+            }
+
+            override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                level.continueFromPause()
+                table.isVisible = false
+            }
+        })
+
+        val mainMenu = TextButton(" Main menu ", skin)
+        mainMenu.addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                return true;
+            }
+
+            override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+                game.screen = MainMenuScreen(game)
+                sound2?.stop()
+                dispose()
+            }
+        })
+        table.add(retry)//.width(100f)
+        table.row()
+        table.add(mainMenu)//.width(100f)
+        table.center()
+        table.setFillParent(true)
+        return table
     }
 
     override fun hide() {
@@ -91,8 +180,8 @@ public class PlayScreen(val numOfLevel: String, val game: KillTheMole, val weapo
         sound2?.play()
         val skin = Skin()
         skin.add("default", game.levels)
-        skin.add("ButtonOn", assets.buttonon )
-        skin.add("ButtonOff", assets.buttonoff )
+        skin.add("ButtonOn", assets.buttonon)
+        skin.add("ButtonOff", assets.buttonoff)
 
         val textButtonStyle = TextButton.TextButtonStyle()
         textButtonStyle.up = skin.newDrawable("ButtonOn")

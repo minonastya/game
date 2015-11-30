@@ -31,8 +31,7 @@ public class AssetsLoader {
     public var sound2: Sound? = null
     public var buttonon: Texture? = null
     public var buttonoff: Texture? = null
-
-
+    public var pauseButton: Texture? = null
 
     companion object {
         private var _instance: AssetsLoader = AssetsLoader()
@@ -42,7 +41,9 @@ public class AssetsLoader {
 
     public fun load() {
         loadWeapons()
-        if (!prefs.contains("Coins")) {prefs.putInteger("Coins", 0); prefs.flush()}
+        if (!prefs.contains("Coins")) {
+            prefs.putInteger("Coins", 0); prefs.flush()
+        }
         moleAlive = Texture(Gdx.files.internal("data/images/mole.png"))
         moleDead = Texture(Gdx.files.internal("data/images/hole.png"))
         background = Texture(Gdx.files.internal("data/images/collage.jpg"))
@@ -58,14 +59,23 @@ public class AssetsLoader {
         sound2 = Gdx.audio.newSound(Gdx.files.internal("data/music/sound2.mp3"))
         buttonoff = Texture(Gdx.files.internal("data/images/ButtonOff.png"))
         buttonon = Texture(Gdx.files.internal("data/images/ButtonOn.png"))
+        pauseButton = Texture(Gdx.files.internal("data/images/ButtonOn.png"))
     }
 
     public fun getPrefs(): Preferences = prefs
 
     private fun loadWeapons() {
-        if (!prefs.contains("HammerDamage")) {prefs.putInteger("HammerDamage", 20); prefs.flush()}
-        if (!prefs.contains("HammerLevel"))  {prefs.putInteger("HammerLevel", 1  ); prefs.flush()}
-        if (!prefs.contains("ShovelDamage")) {prefs.putInteger("ShovelDamage", 10); prefs.flush()}
-        if (!prefs.contains("ShovelLevel"))  {prefs.putInteger("ShovelLevel", 1) ;  prefs.flush()}
+        if (!prefs.contains("HammerDamage")) {
+            prefs.putInteger("HammerDamage", 20); prefs.flush()
+        }
+        if (!prefs.contains("HammerLevel")) {
+            prefs.putInteger("HammerLevel", 1); prefs.flush()
+        }
+        if (!prefs.contains("ShovelDamage")) {
+            prefs.putInteger("ShovelDamage", 10); prefs.flush()
+        }
+        if (!prefs.contains("ShovelLevel")) {
+            prefs.putInteger("ShovelLevel", 1) ;  prefs.flush()
+        }
     }
 }
