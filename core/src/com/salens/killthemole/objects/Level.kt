@@ -15,6 +15,7 @@ import java.util.*
 public class Level(val level: String, weapon: String) {
 
     public var isGameOver = false
+    //public var isGamePaused = false
     public var molesArray: Array<Mole>
     public var delay: Long = 1
     private val random = Random()
@@ -25,11 +26,10 @@ public class Level(val level: String, weapon: String) {
     private val coins: Coins
 
 
+
     init {
         player = Player(weapon)
-
         coins = Coins()
-
 
         val xml = XMLparse()
         val posArray = xml.getPos(level)
@@ -56,9 +56,7 @@ public class Level(val level: String, weapon: String) {
             )
             i++
         }
-
     }
-
 
     public fun update(delta: Float): Int {
         if (player.health < 1) isGameOver = true
@@ -66,19 +64,35 @@ public class Level(val level: String, weapon: String) {
         return player.moleKilled
     }
 
-
-
     public fun gameOver() {
+        timer.cancel()
         for (mole in molesArray) {
-            timer.cancel()
+            mole.Timer = Timer()
         }
         Gdx.app.log("Score", player.moleKilled.toString())
-        coins.addCoins(player.moleKilled * level.toInt())
+        coins.addCoins(player.moleKilled)
+    }
+
+    public fun pause(){
         timer.cancel()
+        for(mole in molesArray){
+            mole.Timer.cancel()
+        }
+    }
+
+    public fun continueFromPause(){
+        timer = Timer()
+        for(mole in molesArray){
+            mole.Timer = Timer()
+        }
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                setMoleAlive(random)
+            }
+        }, delay, delay)
     }
 
     private fun setMoleAlive(rand: Random) {
-        Gdx.app.log("setMoleAlive", "Alive")
         val num = rand.nextInt(molesArray.size - 1)
         if (molesArray[num].isDead) {
             molesArray[num].resurrect()

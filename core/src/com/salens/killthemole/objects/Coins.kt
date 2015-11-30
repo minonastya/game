@@ -8,15 +8,17 @@ import com.badlogic.gdx.Gdx
 public class Coins(){
 
     public var amount: Int
+    private val pref = Gdx.app.getPreferences("KillTheMole")
 
     init {
-        amount = Gdx.app.getPreferences("KillTheMole").getInteger("Coins")
+        amount = pref.getInteger("Coins")
     }
 
     public fun spendCoins(amount: Int): Boolean{
         if (amount <= this.amount) {
             this.amount -= amount
-            Gdx.app.getPreferences("KillTheMole").putInteger("Coins", this.amount)
+            pref.putInteger("Coins", this.amount)
+            pref.flush()
             return true
         }
         else return false
@@ -24,7 +26,7 @@ public class Coins(){
 
     public fun addCoins(amount: Int){
         this.amount += amount
-        Gdx.app.getPreferences("KillTheMole").putInteger("Coins", this.amount)
-        Gdx.app.getPreferences("KillTheMole").flush()
+        pref.putInteger("Coins", this.amount)
+        pref.flush()
     }
 }

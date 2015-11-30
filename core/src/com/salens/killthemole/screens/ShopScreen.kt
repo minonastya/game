@@ -77,7 +77,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
 
             }
         })
-        var currentCost = Math.pow(curLev.toDouble(), 2.0)
+        var currentCost = curLev * 2
 
         hammerLevelUp = TextButton("LevelUp: $currentCost", skin)
         hammerLevelUp.addListener(object : ClickListener() {
@@ -87,11 +87,11 @@ public class ShopScreen(game: KillTheMole) : Screen {
 
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                 curLev = pref.getInteger("HammerLevel")
-                currentCost = Math.pow(curLev.toDouble(), 2.0)
+                currentCost = curLev * 2
                 if (coins.spendCoins(currentCost.toInt())) {
                     pref.putInteger("HammerLevel", curLev + 1)
                     curLev++
-                    currentCost = Math.pow(curLev.toDouble(), 2.0)
+                    currentCost = curLev * 2
                     hammerLevelUp.setText("LevelUp: $currentCost")
                     hammer.setText("Hammer, lvl: $curLev")
                     pref.flush()
@@ -110,7 +110,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
 
             }
         })
-        currentCost = Math.pow(curLev.toDouble(), 3.0)
+        currentCost = curLev * 3
         shovelLevelUp = TextButton("LevelUp: $currentCost", skin)
         shovelLevelUp.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
@@ -119,11 +119,11 @@ public class ShopScreen(game: KillTheMole) : Screen {
 
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                 curLev = pref.getInteger("ShovelLevel")
-                currentCost = Math.pow(curLev.toDouble(), 3.0)
+                currentCost = curLev * 3
                 if (coins.spendCoins(currentCost.toInt())) {
                     pref.putInteger("ShovelLevel", curLev + 1)
                     curLev++
-                    currentCost = Math.pow(curLev.toDouble(), 3.0)
+                    currentCost = curLev * 3
                     shovelLevelUp.setText("LevelUp: $currentCost")
                     shovel.setText("Shovel, lvl: $curLev")
                     pref.flush()
