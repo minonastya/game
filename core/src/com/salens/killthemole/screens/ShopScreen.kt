@@ -57,7 +57,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
         val textButtonStyle2 = TextButton.TextButtonStyle()
         textButtonStyle.up = skin.newDrawable("ButtonOn")
         textButtonStyle.down = skin.newDrawable("ButtonOff")
-        textButtonStyle.checked = skin.newDrawable("ButtonOn")
+        textButtonStyle.checked = skin.newDrawable("ButtonOff", Color.GRAY)
         textButtonStyle.over = skin.newDrawable("ButtonOff")
         textButtonStyle.font = skin.getFont("default")
         skin.add("withChecked", textButtonStyle2)
@@ -79,7 +79,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
         })
         var currentCost = Math.pow(curLev.toDouble(), 2.0)
 
-        hammerLevelUp = TextButton("LevelUp: $currentCost", skin)
+        hammerLevelUp = TextButton("$currentCost", skin)
         hammerLevelUp.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 return true;
@@ -92,7 +92,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
                     pref.putInteger("HammerLevel", curLev + 1)
                     curLev++
                     currentCost = Math.pow(curLev.toDouble(), 2.0)
-                    hammerLevelUp.setText("LevelUp: $currentCost")
+                    hammerLevelUp.setText("$currentCost")
                     hammer.setText("Hammer, lvl: $curLev")
                     pref.flush()
                 }
@@ -111,7 +111,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
             }
         })
         currentCost = Math.pow(curLev.toDouble(), 3.0)
-        shovelLevelUp = TextButton("LevelUp: $currentCost", skin)
+        shovelLevelUp = TextButton("$currentCost", skin)
         shovelLevelUp.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 return true;
@@ -124,19 +124,19 @@ public class ShopScreen(game: KillTheMole) : Screen {
                     pref.putInteger("ShovelLevel", curLev + 1)
                     curLev++
                     currentCost = Math.pow(curLev.toDouble(), 3.0)
-                    shovelLevelUp.setText("LevelUp: $currentCost")
+                    shovelLevelUp.setText("$currentCost")
                     shovel.setText("Shovel, lvl: $curLev")
                     pref.flush()
                 }
             }
         })
         table.row().height(100f)
-        table.add(hammer).width(300f)
-        table.add(hammerLevelUp).width(200f)
+        table.add(hammer).width(400f)
+        table.add(hammerLevelUp).width(300f)
         table.row().height(100f)
-        table.add(shovel).width(300f)
-        table.add(shovelLevelUp).width(200f)
-        table.left()
+        table.add(shovel).width(400f)
+        table.add(shovelLevelUp).width(300f)
+        table.center()
         stage.addActor(table)
 
 

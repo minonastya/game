@@ -10,10 +10,11 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.salens.killthemole.helpers.AssetsLoader
 
 class Background: Actor() {
-
     private val backgroundTexture: Texture?
     private val backgroundSprite: Sprite
     private val mushroomr: Texture?
@@ -27,10 +28,11 @@ class Background: Actor() {
     private val oak: Texture?
     private val oakSprite: Sprite?
     private val assets = AssetsLoader.getInstance()
-
+    val screenWidth = Gdx.graphics.getWidth()
+    val screenHeight = Gdx.graphics.getHeight()
     init{
         backgroundTexture = assets.background
-        backgroundSprite = Sprite(backgroundTexture)
+        backgroundSprite = Sprite(backgroundTexture,screenWidth,screenHeight)
         mushroomr = assets.mushroomred
         mushroomrSprite = Sprite(mushroomr)
         mushroomb = assets.mushroombrown
@@ -45,7 +47,7 @@ class Background: Actor() {
     override fun draw(batch:Batch, alpha:Float) {
         backgroundSprite.draw(batch)
         var x = -75f
-        for (i in 0..5) {
+        while (x < screenWidth){
             mushroomrSprite.draw(batch)
             mushroomrSprite.setPosition(x + 50f, 65f)
             x += 50f
@@ -56,9 +58,13 @@ class Background: Actor() {
             mushroomwSprite.setPosition(x + 50f, 65f)
             x += 50f
         }
-        pineSprite?.setPosition(20f, 200f)
-        pineSprite?.draw(batch)
-        oakSprite?.setPosition(640f, 200f)
-        oakSprite?.draw(batch)
+        var y = screenHeight
+        while (y - pine!!.height > 100f) {
+            y -= pine.height
+            pineSprite?.setPosition(20f, y.toFloat())
+            pineSprite?.draw(batch)
+            oakSprite?.setPosition(screenWidth - assets.oak!!.width - 20f, y.toFloat())
+            oakSprite?.draw(batch)
+        }
     }
 }
