@@ -38,8 +38,8 @@ class MainMenuScreen(val game: KillTheMole): Screen {
         stage.addActor(background)
         skin = Skin()
         skin.add("default", game.levels)
-        skin.add("ButtonOn", assets.buttonon )
-        skin.add("ButtonOff", assets.buttonoff )
+        skin.add("ButtonOn", assets.buttonon)
+        skin.add("ButtonOff", assets.buttonoff)
         val labelStyle = Label.LabelStyle()
         labelStyle.font = game.font
         labelStyle.fontColor = Color.WHITE
