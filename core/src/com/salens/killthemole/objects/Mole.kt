@@ -28,13 +28,12 @@ public class Mole(val ourX: Float, val ourY: Float, val player: Player, val heal
     private var imgDead: Sprite
     private var imgDead_texture: Texture?
     private val assets = AssetsLoader.getInstance()
-    private var Timer: Timer = Timer()
+    public var Timer: Timer = Timer()
     private var currentHealth: Int
     public var isDead: Boolean = true
     private var sound1: Sound?
 
     init {
-        //deadCounter = 0
         currentHealth = health
         imgDead_texture = assets.moleDead ?: throw NullPointerException("moleDead texture")
         imgDead = Sprite(imgDead_texture)

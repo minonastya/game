@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 
 <level>
-	<delay delay="3000">c5</delay>
-	<health health="100">c5</health>
-	<attack attack="25">c5</attack>
-    <positions>
-		<position x="85" y="10" />
-		<position x="75" y="25" />
-		<position x="50" y="35" />
-		<position x="30" y="33" />
-		<position x="30" y="60" />
-		<position x="50" y="63" />
-		<position x="20" y="75" />
-		<position x="33" y="78" />
-		<position x="25" y="93" />
+	<delay delay="2500">c5</delay>
+	<health health="6">c5</health>
+	<attack attack="101">c5</attack>
+	<positions>
+		<position x="70" y="40" />
+		<position x="45" y="40" />
+		<position x="20" y="40" />
+		<position x="70" y="65" />
+		<position x="45" y="65" />
+		<position x="20" y="65" />
+		<position x="70" y="90" />
+		<position x="45" y="90" />
+		<position x="20" y="90" />
 	</positions>
 </level>
