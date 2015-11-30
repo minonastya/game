@@ -29,7 +29,6 @@ public class AssetsLoader {
     public var sound1: Sound? = null
     public var sound2: Sound? = null
 
-
     companion object {
         private var _instance: AssetsLoader = AssetsLoader()
         fun getInstance(): AssetsLoader = _instance

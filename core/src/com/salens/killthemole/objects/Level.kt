@@ -70,7 +70,6 @@ public class Level(val level: String, weapon: String) {
 
     public fun gameOver() {
         for (mole in molesArray) {
-         //   score += mole.deadCounter
             timer.cancel()
         }
         Gdx.app.log("Score", player.moleKilled.toString())
