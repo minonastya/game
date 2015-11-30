@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.ui.Button
 
 
 public class AssetsLoader {
@@ -28,6 +29,9 @@ public class AssetsLoader {
     public var music: Music? = null
     public var sound1: Sound? = null
     public var sound2: Sound? = null
+    public var buttonon: Texture? = null
+    public var buttonoff: Texture? = null
+
 
 
     companion object {
@@ -52,6 +56,8 @@ public class AssetsLoader {
         music = Gdx.audio.newMusic(Gdx.files.internal("data/music/music1.ogg"))
         sound1 = Gdx.audio.newSound(Gdx.files.internal("data/music/sound1.wav"))
         sound2 = Gdx.audio.newSound(Gdx.files.internal("data/music/sound2.mp3"))
+        buttonoff = Texture(Gdx.files.internal("data/images/ButtonOff.png"))
+        buttonon = Texture(Gdx.files.internal("data/images/ButtonOn.png"))
     }
 
     public fun getPrefs(): Preferences = prefs

@@ -29,27 +29,24 @@ class LevelScreen(internal val game: KillTheMole, weapon: String) : Screen {
     private val table: Table
     private val labelStyle: Label.LabelStyle
     private var level: TextButton? = null
-    private val pixmap: Pixmap
     private val background: Background
-
+    private val assets = AssetsLoader.getInstance()
 
     init {
         stage = Stage(ScreenViewport())
         skin = Skin()
         skin.add("default", game.levels)
-        pixmap = Pixmap((Gdx.graphics.getWidth() / 4), Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888)
-        pixmap.setColor(Color.WHITE)
-        pixmap.fill()
-        skin.add("background", Texture(pixmap))
+        skin.add("ButtonOn", assets.buttonon )
+        skin.add("ButtonOff", assets.buttonoff )
         background = Background()
         background.setPosition(0f, 0f)
         stage.addActor(background)
 
         val textButtonStyle = TextButton.TextButtonStyle()
-        textButtonStyle.up = skin.newDrawable("background", Color.GRAY)
-        textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY)
-        textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY)
-        textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY)
+        textButtonStyle.up = skin.newDrawable("ButtonOn")
+        textButtonStyle.down = skin.newDrawable("ButtonOff")
+        textButtonStyle.checked = skin.newDrawable("ButtonOn")
+        textButtonStyle.over = skin.newDrawable("ButtonOff")
         textButtonStyle.font = skin.getFont("default")
         skin.add("default", textButtonStyle)
 
