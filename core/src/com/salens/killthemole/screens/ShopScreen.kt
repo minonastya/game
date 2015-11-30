@@ -9,13 +9,13 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.salens.killthemole.KillTheMole
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.salens.killthemole.helpers.AssetsLoader
+import com.salens.killthemole.objects.Background
 import com.salens.killthemole.objects.Coins
 
 public class ShopScreen(game: KillTheMole) : Screen {
@@ -26,41 +26,40 @@ public class ShopScreen(game: KillTheMole) : Screen {
     private val shovelLevelUp: TextButton
     private val hammerLevelUp: TextButton
     private val table: Table
-    private val pixmap: Pixmap
     private val moneyTable: Table
-
     private val play: TextButton
-
     private val table2: Table
     private val moneyLabel: Label
-
+    private val background: Background
     private var weaponType: String = ""
     private val pref: Preferences = Gdx.app.getPreferences("KillTheMole")
     private val coins = Coins()
+    private val assets = AssetsLoader.getInstance()
 
     init {
         stage = Stage(ScreenViewport())
         skin = Skin()
         skin.add("default", game.levels)
-        pixmap = Pixmap((Gdx.graphics.getWidth() / 4), Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888)
-        pixmap.setColor(Color.WHITE)
-        pixmap.fill()
-        skin.add("background", Texture(pixmap))
+        skin.add("ButtonOn", assets.buttonon )
+        skin.add("ButtonOff", assets.buttonoff )
+        background = Background()
+        background.setPosition(0f, 0f)
+        stage.addActor(background)
 
         val textButtonStyle = TextButton.TextButtonStyle()
-        textButtonStyle.up = skin.newDrawable("background", Color.GRAY)
-        textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY)
-        textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY)
-        textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY)
+        textButtonStyle.up = skin.newDrawable("ButtonOn")
+        textButtonStyle.down = skin.newDrawable("ButtonOff")
+        textButtonStyle.checked = skin.newDrawable("ButtonOn")
+        textButtonStyle.over = skin.newDrawable("ButtonOff")
         textButtonStyle.font = skin.getFont("default")
         skin.add("default", textButtonStyle)
 
         val textButtonStyle2 = TextButton.TextButtonStyle()
-        textButtonStyle2.up = skin.newDrawable("background", Color.GRAY)
-        textButtonStyle2.down = skin.newDrawable("background", Color.DARK_GRAY)
-        textButtonStyle2.checked = skin.newDrawable("background", Color.GRAY)
-        textButtonStyle2.over = skin.newDrawable("background", Color.LIGHT_GRAY)
-        textButtonStyle2.font = skin.getFont("default")
+        textButtonStyle.up = skin.newDrawable("ButtonOn")
+        textButtonStyle.down = skin.newDrawable("ButtonOff")
+        textButtonStyle.checked = skin.newDrawable("ButtonOff", Color.GRAY)
+        textButtonStyle.over = skin.newDrawable("ButtonOff")
+        textButtonStyle.font = skin.getFont("default")
         skin.add("withChecked", textButtonStyle2)
 
         table = Table()
@@ -80,7 +79,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
         })
         var currentCost = Math.pow(curLev.toDouble(), 2.0)
 
-        hammerLevelUp = TextButton("LevelUp: $currentCost", skin, "withChecked")
+        hammerLevelUp = TextButton("$currentCost", skin)
         hammerLevelUp.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 return true;
@@ -93,7 +92,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
                     pref.putInteger("HammerLevel", curLev + 1)
                     curLev++
                     currentCost = Math.pow(curLev.toDouble(), 2.0)
-                    hammerLevelUp.setText("LevelUp: $currentCost")
+                    hammerLevelUp.setText("$currentCost")
                     hammer.setText("Hammer, lvl: $curLev")
                     pref.flush()
                 }
@@ -112,7 +111,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
             }
         })
         currentCost = Math.pow(curLev.toDouble(), 3.0)
-        shovelLevelUp = TextButton("LevelUp: $currentCost", skin, "withChecked")
+        shovelLevelUp = TextButton("$currentCost", skin)
         shovelLevelUp.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 return true;
@@ -125,19 +124,19 @@ public class ShopScreen(game: KillTheMole) : Screen {
                     pref.putInteger("ShovelLevel", curLev + 1)
                     curLev++
                     currentCost = Math.pow(curLev.toDouble(), 3.0)
-                    shovelLevelUp.setText("LevelUp: $currentCost")
+                    shovelLevelUp.setText("$currentCost")
                     shovel.setText("Shovel, lvl: $curLev")
                     pref.flush()
                 }
             }
         })
         table.row().height(100f)
-        table.add(hammer).width(300f)
-        table.add(hammerLevelUp).width(200f)
+        table.add(hammer).width(400f)
+        table.add(hammerLevelUp).width(300f)
         table.row().height(100f)
-        table.add(shovel).width(300f)
-        table.add(shovelLevelUp).width(200f)
-        table.left()
+        table.add(shovel).width(400f)
+        table.add(shovelLevelUp).width(300f)
+        table.center()
         stage.addActor(table)
 
 
@@ -152,8 +151,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
             }
 
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                game.setScreen(PlayScreen("1", game, weaponType))
-                dispose()
+                game.screen = LevelScreen(game, weaponType)
             }
         })
 

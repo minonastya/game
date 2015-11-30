@@ -2,40 +2,55 @@ package com.salens.killthemole.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.Color
 import com.salens.killthemole.KillTheMole
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.salens.killthemole.helpers.AssetsLoader
+import com.salens.killthemole.objects.Background
 
-
-class MainMenuScreen(game: KillTheMole): Screen {
+class MainMenuScreen(val game: KillTheMole): Screen {
     private val stage: Stage
     private val skin: Skin
+    private val label: Label
     private val play: TextButton
+    private val settings: TextButton
     private val exit: TextButton
     private val table: Table
-    private val pixmap: Pixmap
+    private val assets = AssetsLoader.getInstance()
+    private val music: Music?
+    private val background: Background
 
     init {
+        music = assets.music
+        music?.play()
+        music?.setVolume(1f)
+        music?.setLooping(true)
         stage = Stage(ScreenViewport())
+        background = Background()
+        background.setPosition(0f, 0f)
+        stage.addActor(background)
         skin = Skin()
         skin.add("default", game.levels)
-        pixmap = Pixmap((Gdx.graphics.getWidth()/4),Gdx.graphics.getHeight()/10, Pixmap.Format.RGB888)
-        pixmap.setColor(Color.WHITE)
-        pixmap.fill()
-        skin.add("background", Texture(pixmap))
+        skin.add("ButtonOn", assets.buttonon )
+        skin.add("ButtonOff", assets.buttonoff )
+        val labelStyle = Label.LabelStyle()
+        labelStyle.font = game.font
+        labelStyle.fontColor = Color.WHITE
+        label = Label("KILL THE MOLE", labelStyle)
+        label.setAlignment(Align.center)
 
         val textButtonStyle = TextButton.TextButtonStyle()
-        textButtonStyle.up = skin.newDrawable("background", Color.GRAY)
-        textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY)
-        textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY)
-        textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY)
+        textButtonStyle.up = skin.newDrawable("ButtonOn")
+        textButtonStyle.down = skin.newDrawable("ButtonOff")
+        textButtonStyle.checked = skin.newDrawable("ButtonOn")
+        textButtonStyle.over = skin.newDrawable("ButtonOff")
         textButtonStyle.font = skin.getFont("default")
         skin.add("default", textButtonStyle)
 
@@ -49,9 +64,10 @@ class MainMenuScreen(game: KillTheMole): Screen {
             }
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                 game.setScreen(ShopScreen(game))
-                dispose()
             }
         })
+
+        settings = TextButton("Settings", skin)
 
         exit = TextButton("Exit", skin)
         exit.addListener(object: ClickListener() {
@@ -64,10 +80,13 @@ class MainMenuScreen(game: KillTheMole): Screen {
                 dispose()
             }
         })
+        table.add(label).width(400f).center()
         table.row().height(100f)
         table.add(play).width(400f)
         table.row().height(100f)
-        table.add(exit).width((400f))
+        table.add(settings).width(400f)
+        table.row().height(100f)
+        table.add(exit).width(400f)
         stage.addActor(table)
 
         Gdx.input.setInputProcessor(stage)

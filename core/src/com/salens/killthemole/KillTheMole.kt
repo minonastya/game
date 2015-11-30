@@ -25,10 +25,10 @@ class KillTheMole : Game() {
     override fun create() {
         val generator = FreeTypeFontGenerator(Gdx.files.internal("data/fonts/alpha_echo.ttf"))
         val param = FreeTypeFontGenerator.FreeTypeFontParameter()
-        param.size = Gdx.graphics.height / 18
+        param.size = Gdx.graphics.height / 10
         param.characters = FONT_CHARACTERS
         font = generator.generateFont(param)
-        param.size = Gdx.graphics.height / 20
+        param.size = Gdx.graphics.height / 10
         levels = generator.generateFont(param)
         font?.color = Color.WHITE
         levels?.color = Color.WHITE
