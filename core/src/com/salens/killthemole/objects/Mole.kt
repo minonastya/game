@@ -2,6 +2,7 @@ package com.salens.killthemole.objects
 
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
@@ -28,11 +29,9 @@ public class Mole(val ourX: Float, val ourY: Float, val player: Player, val heal
     private var imgDead_texture: Texture?
     private val assets = AssetsLoader.getInstance()
     private var Timer: Timer = Timer()
-
     private var currentHealth: Int
-
     public var isDead: Boolean = true
-
+    private var sound1: Sound?
 
     init {
         //deadCounter = 0
@@ -44,12 +43,13 @@ public class Mole(val ourX: Float, val ourY: Float, val player: Player, val heal
         imgAlive = Sprite(imgAlive_texture)
         imgAlive.setSize(Gdx.graphics.height.toFloat() * 15 / 100, Gdx.graphics.height.toFloat() * 15 / 100)
         img = imgDead
+        sound1 = assets.sound1
 
-        //this.sound = Gdx.audio.newSound(Gdx.files.internal("sounds/aaa.mp3"))
         addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 currentHealth -= player.attack()
-
+                sound1?.play()
+                sound1?.setVolume(1, 1f)
                 Gdx.app.log("CorrentHealthOfMole", "$currentHealth")
                 return true
             }

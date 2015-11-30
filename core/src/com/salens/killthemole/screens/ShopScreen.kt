@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.salens.killthemole.objects.Background
 import com.salens.killthemole.objects.Coins
 
 public class ShopScreen(game: KillTheMole) : Screen {
@@ -28,12 +29,10 @@ public class ShopScreen(game: KillTheMole) : Screen {
     private val table: Table
     private val pixmap: Pixmap
     private val moneyTable: Table
-
     private val play: TextButton
-
     private val table2: Table
     private val moneyLabel: Label
-
+    private val background: Background
     private var weaponType: String = ""
     private val pref: Preferences = Gdx.app.getPreferences("KillTheMole")
     private val coins = Coins()
@@ -46,6 +45,9 @@ public class ShopScreen(game: KillTheMole) : Screen {
         pixmap.setColor(Color.WHITE)
         pixmap.fill()
         skin.add("background", Texture(pixmap))
+        background = Background()
+        background.setPosition(0f, 0f)
+        stage.addActor(background)
 
         val textButtonStyle = TextButton.TextButtonStyle()
         textButtonStyle.up = skin.newDrawable("background", Color.GRAY)
@@ -152,8 +154,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
             }
 
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
-                game.setScreen(PlayScreen("1", game, weaponType))
-                dispose()
+                game.screen = LevelScreen(game, weaponType)
             }
         })
 
