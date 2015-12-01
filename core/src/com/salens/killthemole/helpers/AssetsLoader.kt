@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.Button
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 
 
 public class AssetsLoader {
@@ -32,6 +33,9 @@ public class AssetsLoader {
     public var buttonon: Texture? = null
     public var buttonoff: Texture? = null
     public var pauseButton: Texture? = null
+    public var hammer: Texture? = null
+    public var shovel: Texture? = null
+    public var mark: Texture? = null
 
     companion object {
         private var _instance: AssetsLoader = AssetsLoader()
@@ -60,6 +64,10 @@ public class AssetsLoader {
         buttonoff = Texture(Gdx.files.internal("data/images/ButtonOff.png"))
         buttonon = Texture(Gdx.files.internal("data/images/ButtonOn.png"))
         pauseButton = Texture(Gdx.files.internal("data/images/ButtonOn.png"))
+        hammer = Texture(Gdx.files.internal("data/images/hammer_iron.png"))
+        shovel = Texture(Gdx.files.internal("data/images/shovel_iron.png"))
+        mark = Texture(Gdx.files.internal("data/images/mark.png"))
+
     }
 
     public fun getPrefs(): Preferences = prefs

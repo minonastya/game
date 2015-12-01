@@ -9,6 +9,7 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.salens.killthemole.KillTheMole
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
@@ -25,6 +26,8 @@ public class ShopScreen(game: KillTheMole) : Screen {
     private val shovel: TextButton
     private val shovelLevelUp: TextButton
     private val hammerLevelUp: TextButton
+    private val markHammer: TextButton
+    private val markShovel: TextButton
     private val table: Table
     private val moneyTable: Table
     private val play: TextButton
@@ -40,28 +43,35 @@ public class ShopScreen(game: KillTheMole) : Screen {
         stage = Stage(ScreenViewport())
         skin = Skin()
         skin.add("default", game.levels)
-        skin.add("ButtonOn", assets.buttonon )
-        skin.add("ButtonOff", assets.buttonoff )
+        skin.add("ButtonOn", assets.buttonon)
+        skin.add("ButtonOff", assets.buttonoff)
+        skin.add("Mark", assets.mark)
         background = Background()
         background.setPosition(0f, 0f)
         stage.addActor(background)
 
+        val markButton = TextButton.TextButtonStyle()
+        markButton.up = skin.newDrawable("Mark")
+        markButton.down = skin.newDrawable("Mark")
+        markButton.checked = skin.newDrawable("Mark")
+        markButton.over = skin.newDrawable("Mark")
+        markButton.font = skin.getFont("default")
+        skin.add("Mark", markButton)
+
+
         val textButtonStyle = TextButton.TextButtonStyle()
         textButtonStyle.up = skin.newDrawable("ButtonOn")
-        textButtonStyle.down = skin.newDrawable("ButtonOff")
+        textButtonStyle.down = skin.newDrawable("ButtonOn")
         textButtonStyle.checked = skin.newDrawable("ButtonOn")
-        textButtonStyle.over = skin.newDrawable("ButtonOff")
+        textButtonStyle.over = skin.newDrawable("ButtonOn")
         textButtonStyle.font = skin.getFont("default")
         skin.add("default", textButtonStyle)
 
-        val textButtonStyle2 = TextButton.TextButtonStyle()
-        textButtonStyle.up = skin.newDrawable("ButtonOn")
-        textButtonStyle.down = skin.newDrawable("ButtonOff")
-        textButtonStyle.checked = skin.newDrawable("ButtonOff", Color.GRAY)
-        textButtonStyle.over = skin.newDrawable("ButtonOff")
-        textButtonStyle.font = skin.getFont("default")
-        skin.add("withChecked", textButtonStyle2)
 
+        markHammer = TextButton("", markButton)
+        markShovel = TextButton("", markButton)
+        markHammer.isVisible = true
+        markShovel.isVisible = false
         table = Table()
         table.setFillParent(true)
 
@@ -74,7 +84,8 @@ public class ShopScreen(game: KillTheMole) : Screen {
 
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                 weaponType = "Hammer"
-
+                markHammer.isVisible = true
+                if (markShovel.isVisible) markShovel.isVisible = false
             }
         })
         var currentCost = curLev * 2
@@ -94,7 +105,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
                     currentCost = curLev * 2
                     hammerLevelUp.setText("$currentCost")
                     currentCost = curLev * 2
-                    hammerLevelUp.setText("LevelUp: $currentCost")
+                    hammerLevelUp.setText("$currentCost")
                     hammer.setText("Hammer, lvl: $curLev")
                     pref.flush()
                 }
@@ -109,11 +120,12 @@ public class ShopScreen(game: KillTheMole) : Screen {
 
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
                 weaponType = "Shovel"
-
+                markShovel.isVisible = true
+                if (markHammer.isVisible) markHammer.isVisible = false
             }
         })
         currentCost = curLev * 3
-        shovelLevelUp = TextButton("LevelUp: $currentCost", skin)
+        shovelLevelUp = TextButton("$currentCost", skin)
 
         shovelLevelUp.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
@@ -127,22 +139,22 @@ public class ShopScreen(game: KillTheMole) : Screen {
                     pref.putInteger("ShovelLevel", curLev + 1)
                     curLev++
                     currentCost = curLev * 3
-                    shovelLevelUp.setText("LevelUp: $currentCost")
+                    shovelLevelUp.setText("$currentCost")
                     shovel.setText("Shovel, lvl: $curLev")
                     pref.flush()
                 }
             }
         })
         table.row().height(100f)
+        table.add(markHammer).width(75f)
         table.add(hammer).width(400f)
-        table.add(hammerLevelUp).width(300f)
+        table.add(hammerLevelUp).width(200f)
         table.row().height(100f)
+        table.add(markShovel).width(75f)
         table.add(shovel).width(400f)
-        table.add(shovelLevelUp).width(300f)
+        table.add(shovelLevelUp).width(200f)
         table.center()
         stage.addActor(table)
-
-
 
         table2 = Table()
         table2.setFillParent(true)
@@ -165,7 +177,7 @@ public class ShopScreen(game: KillTheMole) : Screen {
 
         val labelStyle = Label.LabelStyle()
         labelStyle.font = game.font
-        labelStyle.fontColor = Color.BLACK
+        labelStyle.fontColor = Color.WHITE
         moneyLabel = Label("MONEY: ${coins.amount}", labelStyle)
         moneyTable = Table()
         moneyTable.add(moneyLabel)
